@@ -2,12 +2,14 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+const PORT = 3005;
+
 app.use(express.static('build'));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/build', '/index.html'));
 });
 
-app.listen(process.env.port || 3000);
+app.listen(process.env.port || PORT);
 
-console.log('Running at Port 3000');
+console.log('Running at Port ' + PORT);
