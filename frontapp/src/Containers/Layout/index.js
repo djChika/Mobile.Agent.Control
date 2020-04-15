@@ -37,24 +37,24 @@ class PageLayout extends React.Component {
               </Menu>
             </Flex>
           </Header>
-          <Content style={{ padding: '0 50px' }}>
+          <Content style={{ padding: '0 50px', margin: '24px 0' }}>
+            {/* breadcrumb */}
             <Layout
-              className="site-layout-background"
               style={{
                 padding: '24px 0',
-                margin: '24px 0',
                 background: '#fff'
               }}
             >
-              <Content style={{ padding: '0 24px', minHeight: 280 }}>
-                <Switch>
-                  {paths.map((path, i) => (
-                    <Route key={i} path={path.route}>
-                      {path.content}
-                    </Route>
-                  ))}
-                </Switch>
-              </Content>
+              <Switch>
+                {paths.map((path, i) => (
+                  <Route
+                    key={i}
+                    path={path.route}
+                    exact={path.exact}
+                    component={path.content}
+                  />
+                ))}
+              </Switch>
             </Layout>
           </Content>
         </Layout>
