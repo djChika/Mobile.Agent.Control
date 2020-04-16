@@ -1,11 +1,11 @@
 import { screens } from './mq';
 
 const ALLOWED_BREAKPOINTS = [
+//'less'
   'tablet',
   'desktop',
-  'desktop1280',
-  'desktop1440',
-  'desktop1680'
+  'desktop1920',
+  'desktop2560'
 ];
 
 export default {

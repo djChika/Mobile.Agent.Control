@@ -8,7 +8,7 @@ const { Content } = Layout;
 
 const AppContent = () => {
   return (
-    <Box px={[0, 50, 100, 100, 200]}>
+    <Box px={[0, 0, 0, 100, 200]}>
       <Content style={{ padding: '0 50px', margin: '24px 0' }}>
         <Switch>
           {paths.map((path, i) => (

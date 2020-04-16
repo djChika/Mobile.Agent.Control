@@ -2,12 +2,19 @@ import React from 'react';
 import { Menu as AntMenu, Layout } from 'antd';
 const { Sider } = Layout;
 
-const Menu = ({ list }) => {
+const Menu = ({ list, onSelectNews }) => {
   return (
     <Sider>
       <AntMenu mode="inline" style={{ height: '100%' }}>
         {list.map((n, i) => (
-          <AntMenu.Item key={i}>{n.title}</AntMenu.Item>
+          <AntMenu.Item
+            key={i}
+            onClick={() => {
+              onSelectNews(n.id);
+            }}
+          >
+            {n.title}
+          </AntMenu.Item>
         ))}
       </AntMenu>
     </Sider>
