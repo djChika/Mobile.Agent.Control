@@ -1,7 +1,7 @@
 import { NoMatch } from 'Components/Router';
 import News from 'Containers/News';
 import Shell from 'Containers/Shell';
-import mapStateToProps from './mapStateToProps';
+import { fetchNewsData } from './fetch';
 
 const paths = [
   {
@@ -15,7 +15,10 @@ const paths = [
     id: 'News',
     name: 'Новости',
     route: '/news',
-    content: Shell(News, { mapStateToProps: mapStateToProps.News }),
+    content: Shell(News, {
+      fetchData: fetchNewsData,
+      stores: ['news']
+    }),
     exact: true
   },
   {

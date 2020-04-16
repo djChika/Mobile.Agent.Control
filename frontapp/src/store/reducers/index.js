@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
 import news from './news';
+import ui from './ui';
 
 const reducers = combineReducers({
-  news
+  news,
+  ui
 });
 
 const rootReducer = (state, action) => {

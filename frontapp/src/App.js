@@ -8,12 +8,12 @@ import { ThemeProvider } from 'styled-components';
 import theme from 'UIKit/theme';
 import './App.css';
 
-const store = configure();
+global.store = configure();
 
 function App() {
   return (
     <div className="App">
-      <Provider store={store}>
+      <Provider store={global.store}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Layout />
