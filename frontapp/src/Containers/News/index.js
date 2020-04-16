@@ -1,6 +1,8 @@
 import { Layout } from 'antd';
-import Menu from 'Components/Menu';
+import { Menu } from './lib';
+import Background from 'Containers/Background';
 import React from 'react';
+
 const { Content } = Layout;
 
 class News extends React.Component {
@@ -9,10 +11,10 @@ class News extends React.Component {
   }
   render() {
     return (
-      <>
+      <Background>
         <Menu list={this.props.news.list} />
         <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
-      </>
+      </Background>
     );
   }
 }
