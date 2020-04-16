@@ -9,7 +9,7 @@ const rules = [
   }
 ];
 
-const itemParams = {
+const itemprops = {
   style: {
     display: 'flex',
     flexDirection: 'column'
@@ -17,15 +17,46 @@ const itemParams = {
   labelAlign: 'left'
 };
 
-const normFile = e => {
-  console.log('Upload event:', e);
-
-  if (Array.isArray(e)) {
-    return e;
-  }
-
-  return e && e.fileList;
+const INPUT_TYPES = {
+  textarea: 'textarea'
 };
+
+const formItems = [
+  {
+    name: 'title',
+    label: 'Название',
+    rules,
+    itemprops
+  },
+  {
+    name: 'shortText',
+    label: 'Краткое описание',
+    rules,
+    itemprops,
+    type: INPUT_TYPES.textarea
+  },
+  {
+    name: 'description',
+    label: 'Описание',
+    rules,
+    itemprops,
+    type: INPUT_TYPES.textarea
+  },
+  {
+    name: 'link',
+    label: 'Ссылка',
+    itemprops
+  }
+];
+
+function selectInput(type, params) {
+  switch (type) {
+    case INPUT_TYPES.textarea:
+      return <Input.TextArea {...params} />;
+    default:
+      return <Input {...params} />;
+  }
+}
 
 const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
   return (
@@ -36,52 +67,17 @@ const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
           sendNews();
         }}
       >
-        <Form.Item
-          name={['news', 'title']}
-          label="Название"
-          rules={rules}
-          {...itemParams}
-        >
-          <Input
-            onChange={e => {
-              onChangeField('title', e.target.value);
-            }}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name={['news', 'shorttext']}
-          label="Краткое описание"
-          rules={rules}
-          {...itemParams}
-        >
-          <Input.TextArea
-            onChange={e => {
-              onChangeField('shortText', e.target.value);
-            }}
-          />
-        </Form.Item>
-
-        <Form.Item
-          name={['news', 'description']}
-          label="Описание"
-          rules={rules}
-          {...itemParams}
-        >
-          <Input.TextArea
-            onChange={e => {
-              onChangeField('description', e.target.value);
-            }}
-          />
-        </Form.Item>
-
-        <Form.Item name={['news', 'link']} label="Ссылка" {...itemParams}>
-          <Input
-            onChange={e => {
-              onChangeField('link', e.target.value);
-            }}
-          />
-        </Form.Item>
+        {formItems.map((item, i) => {
+          return (
+            <Form.Item key={i} {...item} {...itemprops}>
+              {selectInput(item.type, {
+                onChange: e => {
+                  onChangeField(item.name, e.target.value);
+                }
+              })}
+            </Form.Item>
+          );
+        })}
 
         {/* <Form.Item
           name="preview"
