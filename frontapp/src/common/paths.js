@@ -1,6 +1,6 @@
-import { NoMatch } from 'Components/Router';
 import News from 'Containers/News';
 import Shell from 'Containers/Shell';
+import { NotFound } from 'Components/SharedComponents/Result';
 import { fetchNewsData } from './fetch';
 
 const paths = [
@@ -24,7 +24,7 @@ const paths = [
   {
     name: 404,
     route: undefined,
-    content: NoMatch,
+    content: NotFound,
     exact: true
   }
 ];

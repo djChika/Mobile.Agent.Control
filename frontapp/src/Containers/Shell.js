@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { LoadingSpinner } from 'Components/SharedComponents/Spinner';
+import { BadServer } from 'Components/SharedComponents/Result';
 
 function isReady(targets) {
   let state = global.store.getState();
@@ -16,20 +18,30 @@ function Shell(Component, params) {
   const { fetchData, stores } = params;
   class Shelled extends React.Component {
     state = {
-      loading: true
+      loading: true,
+      isError: false
     };
     componentDidMount() {
       if (!isReady(stores)) {
-        fetchData().then(() => {
-          this.setState({ loading: false });
-        });
+        fetchData()
+          .then(() => {
+            this.setState({ loading: false, isError: false });
+          })
+          .catch(() => {
+            this.setState({
+              isError: true
+            });
+          });
       } else {
-        this.setState({ loading: false });
+        this.setState({ loading: false, isError: false });
       }
     }
     render() {
+      if (this.state.isError) {
+        return <BadServer />;
+      }
       if (this.state.loading === true) {
-        return <div>Loading...</div>;
+        return <LoadingSpinner />;
       }
       return <Component {...this.props} />;
     }
