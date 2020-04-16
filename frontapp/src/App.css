@@ -1,11 +1,1 @@
 @import '~antd/dist/antd.css';
-
-.App {
-  padding: 0 15%;
-}
-
-@media (max-width: 1280px) {
-  .App {
-    padding: 0;
-  }
-}
