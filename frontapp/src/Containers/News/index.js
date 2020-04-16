@@ -22,9 +22,10 @@ class News extends React.Component {
     };
   }
 
-  selectNews = newsId => {
+  selectNews = news => {
     this.setState({
-      selectedNews: newsId
+      selectedNews: news.id || -1,
+      targetNews: news
     });
   };
 
@@ -48,6 +49,7 @@ class News extends React.Component {
         <Content style={{ padding: '0 24px', minHeight: 280 }}>
           <Flex justifyContent="center">
             <Form
+              news={this.state.targetNews}
               onChangeField={this._onChangeField}
               sendNews={this.onSendNews}
             />

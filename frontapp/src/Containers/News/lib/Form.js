@@ -59,10 +59,16 @@ function selectInput(type, params) {
 }
 
 const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
+  const [form] = Form.useForm();
+
+  React.useEffect(() => {
+    form.setFieldsValue(news);
+  }, [news]);
+
   return (
     <Box width="100%" px={[0, 0, 0, 100, 250]}>
       <Form
-        name="news-form"
+        form={form}
         onFinish={() => {
           sendNews();
         }}

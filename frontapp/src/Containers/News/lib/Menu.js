@@ -10,7 +10,7 @@ const Menu = ({ list, onSelectNews }) => {
           <AntMenu.Item
             key={i}
             onClick={() => {
-              onSelectNews(n.id);
+              onSelectNews(n);
             }}
           >
             {n.title}
