@@ -66,7 +66,7 @@ const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
   }, [news]);
 
   return (
-    <Box width="100%" px={[0, 0, 0, 100, 250]}>
+    <Box width="100%" px={[0, 0, 0, 50, 150, 250]}>
       <Form
         form={form}
         onFinish={() => {
