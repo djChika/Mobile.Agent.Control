@@ -1,9 +1,11 @@
+import fetch from 'common/fetch';
+import { BadServer } from 'Components/SharedComponents/Result';
+import { LoadingSpinner } from 'Components/SharedComponents/Spinner';
 import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { LoadingSpinner } from 'Components/SharedComponents/Spinner';
-import { BadServer } from 'Components/SharedComponents/Result';
-import fetch from 'common/fetch';
+import { bindActionCreators } from 'redux';
+import actionCreators from 'store/actionCreators';
 import { setReady } from 'store/actions/ui';
 
 function isReady(targets) {
@@ -11,9 +13,19 @@ function isReady(targets) {
   return targets.every(target => state.ui[target].isReady);
 }
 
-function mapStateToProps(stores) {
-  return state =>
+function buildMapStateToProps(stores) {
+  let mapStateToProps = state =>
     Object.assign({}, ...stores.map(store => ({ [store]: state[store] })));
+  return mapStateToProps;
+}
+
+function buildMapDispatchToProps(stores) {
+  let mapDispatchToProps = dispatch =>
+    bindActionCreators(
+      Object.assign({}, ...stores.map(store => actionCreators[store])),
+      dispatch
+    );
+  return mapDispatchToProps;
 }
 
 function fetchData(stores) {
@@ -70,7 +82,9 @@ function Shell(Component, params) {
     }
   }
 
-  return compose(connect(mapStateToProps(stores)))(Shelled);
+  return compose(
+    connect(buildMapStateToProps(stores), buildMapDispatchToProps(stores))
+  )(Shelled);
 }
 
 export default Shell;
