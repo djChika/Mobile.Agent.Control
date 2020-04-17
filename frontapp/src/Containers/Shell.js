@@ -1,4 +1,3 @@
-import fetch from 'common/fetch';
 import { BadServer } from 'Components/SharedComponents/Result';
 import { LoadingSpinner } from 'Components/SharedComponents/Spinner';
 import React from 'react';
@@ -6,6 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import actionCreators from 'store/actionCreators';
+import actions from 'store/actions';
 import { setReady } from 'store/actions/ui';
 
 function isReady(targets) {
@@ -33,7 +33,7 @@ function fetchData(stores) {
   return new Promise((resolve, reject) => {
     stores.map(store => {
       if (!state.ui[store].isReady) {
-        Promise.all(fetch[store])
+        Promise.all(actions[store])
           .then(() => {
             setReady(store);
             resolve();

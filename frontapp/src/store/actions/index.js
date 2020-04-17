@@ -1,7 +1,5 @@
 import { getNews } from 'store/actions/news';
 
-const fetch = {
+export default {
   news: [getNews()]
 };
-
-export default fetch;

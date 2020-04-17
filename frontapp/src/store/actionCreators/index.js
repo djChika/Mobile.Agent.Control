@@ -1,7 +1,5 @@
 import { addNews } from './news';
 
-const actionCreators = {
+export default {
   news: { addNews }
 };
-
-export default actionCreators;
