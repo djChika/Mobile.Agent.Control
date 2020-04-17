@@ -1,12 +1,11 @@
+import './App.css';
 import Layout from 'Containers/Layout';
-import 'normalize.css';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
 import configure from 'store';
-import { ThemeProvider } from 'styled-components';
 import theme from 'UIKit/theme';
-import './App.css';
 
 global.store = configure();
 
