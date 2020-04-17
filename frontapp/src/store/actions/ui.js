@@ -4,7 +4,7 @@ export function setReady(target) {
   global.store.dispatch({
     type: SET_READY,
     state: {
-      target: 'news'
+      target
     }
   });
 }

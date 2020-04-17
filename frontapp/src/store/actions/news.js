@@ -3,13 +3,21 @@ import { SET_NEWS } from '../types';
 import { urls } from 'constants/urls';
 
 export function getNews() {
-  return axios.get(urls.api.news).then(res => {
-    global.store.dispatch({
-      type: SET_NEWS,
-      state: {
-        list: res.data
-      }
-    });
+  return new Promise((resolve, reject) => {
+    return axios
+      .get(urls.api.news)
+      .then(res => {
+        global.store.dispatch({
+          type: SET_NEWS,
+          state: {
+            list: res.data
+          }
+        });
+        resolve(res.data);
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 }
 
@@ -19,7 +27,5 @@ export function sendNews(data) {
     .then(res => {
       return res;
     })
-    .catch(() => {
-      return false;
-    });
+    .catch(err => err);
 }

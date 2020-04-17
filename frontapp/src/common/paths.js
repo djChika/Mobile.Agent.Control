@@ -1,7 +1,6 @@
 import News from 'Containers/News';
 import Shell from 'Containers/Shell';
 import { NotFound } from 'Components/SharedComponents/Result';
-import { fetchNewsData } from './fetch';
 
 const paths = [
   {
@@ -16,7 +15,6 @@ const paths = [
     name: 'Новости',
     route: '/news',
     content: Shell(News, {
-      fetchData: fetchNewsData,
       stores: ['news']
     }),
     exact: true
