@@ -6,12 +6,6 @@ import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import actionCreators from 'store/actionCreators';
 import actions from 'store/actions';
-import { setReady } from 'store/actions/ui';
-
-function isReady(targets) {
-  let state = global.store.getState();
-  return targets.every(target => state.ui[target].isReady);
-}
 
 function buildMapStateToProps(stores) {
   let mapStateToProps = state =>
@@ -30,19 +24,22 @@ function buildMapDispatchToProps(stores) {
 
 function fetchData(stores) {
   let state = global.store.getState();
+
+  let actionsToRun = [];
+  stores.map(store => {
+    if (!state.ui[store].isReady) {
+      actionsToRun.push(...actions[store]);
+    }
+  });
+
   return new Promise((resolve, reject) => {
-    stores.map(store => {
-      if (!state.ui[store].isReady) {
-        Promise.all(actions[store])
-          .then(() => {
-            setReady(store);
-            resolve();
-          })
-          .catch(err => {
-            reject(err);
-          });
-      }
-    });
+    Promise.all(actionsToRun)
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
 }
 
@@ -55,21 +52,15 @@ function Shell(Component, params) {
     };
 
     componentDidMount() {
-      if (!isReady(stores)) {
-        fetchData(stores)
-          .then(() => {
-            this.setState({
-              loading: false
-            });
-          })
-          .catch(() => {
-            this.setState({ isError: true, loading: false });
+      fetchData(stores)
+        .then(() => {
+          this.setState({
+            loading: false
           });
-      } else {
-        this.setState({
-          loading: false
+        })
+        .catch(() => {
+          this.setState({ isError: true, loading: false });
         });
-      }
     }
     render() {
       if (this.state.loading) {
