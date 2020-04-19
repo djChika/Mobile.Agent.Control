@@ -1,28 +1,23 @@
-import { Layout } from 'antd';
 import paths from 'common/paths';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Box } from 'UIKit/grid';
+import { Flex } from 'UIKit/grid';
 
-const { Content } = Layout;
-
-const AppContent = () => {
+const LayoutContent = () => {
   return (
-    <Box px={[0, 0, 0, 50, 100, 200]}>
-      <Content style={{ padding: '0 50px', margin: '24px 0' }}>
-        <Switch>
-          {paths.map((path, i) => (
-            <Route
-              key={i}
-              path={path.route}
-              exact={path.exact}
-              component={path.content}
-            />
-          ))}
-        </Switch>
-      </Content>
-    </Box>
+    <Flex mx={'7%'} my="24px" justifyContent="center">
+      <Switch>
+        {paths.map((path, i) => (
+          <Route
+            key={i}
+            path={path.route}
+            exact={path.exact}
+            component={path.content}
+          />
+        ))}
+      </Switch>
+    </Flex>
   );
 };
 
-export default AppContent;
+export default LayoutContent;

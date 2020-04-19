@@ -4,7 +4,7 @@ import { urls } from 'constants/urls';
 
 export function getNews() {
   return new Promise((resolve, reject) => {
-    return axios
+    axios
       .get(urls.api.news)
       .then(res => {
         global.store.dispatch({
@@ -28,10 +28,14 @@ export function getNews() {
 }
 
 export function sendNews(data) {
-  return axios
-    .post(urls.api.news, data)
-    .then(res => {
-      return res;
-    })
-    .catch(err => err);
+  return new Promise((resolve, reject) => {
+    axios
+      .post(urls.api.news, data)
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 }

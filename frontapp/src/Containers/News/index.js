@@ -1,35 +1,38 @@
-import { Layout } from 'antd';
-import { Menu, Form } from './lib';
+import { message } from 'antd';
 import Background from 'Containers/Background';
 import React from 'react';
-import { Flex } from 'UIKit/grid';
 import { sendNews } from 'store/actions/news';
+import { Flex, Box } from 'UIKit/grid';
+import { Form, Menu } from './lib';
 
-const { Content } = Layout;
+const NEWS_OBJ = {
+  title: undefined,
+  shortText: undefined,
+  description: undefined,
+  link: undefined
+};
 
-const modes = {
-  add: 'add',
-  edit: 'edit'
+const MESSAGES = {
+  success: 'Изменения сохранены!',
+  error: 'Произошла ошибка! Изменения не сохранены.'
 };
 
 class News extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedNews: 0,
       targetNews: {},
-      mode: undefined
+      sending: false
     };
   }
 
   selectNews = news => {
     this.setState({
-      selectedNews: news.id || -1,
       targetNews: news
     });
   };
 
-  _onChangeField = (field, value) => {
+  changeField = (field, value) => {
     this.setState(prevState => ({
       targetNews: {
         ...prevState.targetNews,
@@ -38,23 +41,54 @@ class News extends React.Component {
     }));
   };
 
-  onSendNews = () => {
-    sendNews(this.state.targetNews);
+  _showMessage = type => {
+    setTimeout(() => {
+      this.setState(
+        {
+          sending: false
+        },
+        () => {
+          message[type](MESSAGES[type]);
+        }
+      );
+    }, 1500);
+  };
+
+  sendNews = () => {
+    this.setState(
+      {
+        sending: true
+      },
+      () => {
+        sendNews(this.state.targetNews)
+          .then(() => {
+            this._showMessage('success');
+          })
+          .catch(() => {
+            this._showMessage('error');
+          });
+      }
+    );
+  };
+
+  createNews = () => {
+    this.props.addNews({ ...NEWS_OBJ, title: 'Новая' });
   };
 
   render() {
     return (
       <Background>
-        <Menu list={this.props.news.list} onSelectNews={this.selectNews} />
-        <Content style={{ padding: '0 24px', minHeight: 280 }}>
-          <Flex justifyContent="center">
-            <Form
-              news={this.state.targetNews}
-              onChangeField={this._onChangeField}
-              sendNews={this.onSendNews}
-            />
-          </Flex>
-        </Content>
+        <Menu
+          list={this.props.news.list}
+          onSelectNews={this.selectNews}
+          onCreateNews={this.createNews}
+        />
+        <Form
+          sending={this.state.sending}
+          news={this.state.targetNews}
+          onChangeField={this.changeField}
+          onSendNews={this.sendNews}
+        />
       </Background>
     );
   }

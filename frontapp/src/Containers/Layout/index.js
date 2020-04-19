@@ -1,14 +1,14 @@
-import { Layout } from 'antd';
-import { Header, Content } from './lib';
 import React from 'react';
+import { Flex } from 'UIKit/grid';
+import { Content, Header } from './lib';
 
 class PageLayout extends React.Component {
   render() {
     return (
-      <Layout>
+      <Flex flexDirection="column">
         <Header />
         <Content />
-      </Layout>
+      </Flex>
     );
   }
 }

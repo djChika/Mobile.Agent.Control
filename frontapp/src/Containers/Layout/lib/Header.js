@@ -10,7 +10,7 @@ const { Header } = Layout;
 const LayoutHeader = () => {
   return (
     <Header className="header">
-      <Flex px={[0, 0, 0, 50, 100, 200]}>
+      <Flex px={[0, 0, 0, '5%', '15%', '18%']}>
         <Logo />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
           {paths.map((path, i) => {

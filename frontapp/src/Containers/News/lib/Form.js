@@ -52,13 +52,13 @@ const formItems = [
 function selectInput(type, params) {
   switch (type) {
     case INPUT_TYPES.textarea:
-      return <Input.TextArea {...params} />;
+      return <Input.TextArea {...params} style={{ height: '180px' }} />;
     default:
       return <Input {...params} />;
   }
 }
 
-const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
+const NewsForm = ({ sending, news, onChangeField, onSendNews }) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
@@ -66,11 +66,14 @@ const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
   }, [news]);
 
   return (
-    <Box width="100%" px={[0, 0, 0, 50, 150, 250]}>
+    <Box px="30px" width={[300, 450, 700, 900]}>
       <Form
+        style={{
+          width: '100%'
+        }}
         form={form}
         onFinish={() => {
-          sendNews();
+          onSendNews();
         }}
       >
         {formItems.map((item, i) => {
@@ -102,7 +105,7 @@ const NewsForm = ({ mode, news, onChangeField, sendNews }) => {
 
         <Form.Item>
           <Flex flexDirection="row" justifyContent="flex-end">
-            <Button type="primary" htmlType="submit">
+            <Button loading={sending} type="primary" htmlType="submit">
               Сохранить
             </Button>
           </Flex>

@@ -1,0 +1,6 @@
+.fixSider {
+  flex-basis: 0px !important;
+  flex-grow: 1 !important;
+  overflow-y: auto !important;
+  background: none;
+}
