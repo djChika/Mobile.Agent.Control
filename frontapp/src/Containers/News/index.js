@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import Background from 'Containers/Background';
 import React from 'react';
-import { sendNews } from 'store/actions/news';
 import { Flex, Box } from 'UIKit/grid';
 import { Form, Menu } from './lib';
 
@@ -60,7 +59,8 @@ class News extends React.Component {
         sending: true
       },
       () => {
-        sendNews(this.state.targetNews)
+        this.props
+          .sendNews(this.state.targetNews)
           .then(() => {
             this._showMessage('success');
           })
@@ -73,6 +73,10 @@ class News extends React.Component {
 
   createNews = () => {
     this.props.addNews({ ...NEWS_OBJ, title: 'Новая' });
+  };
+
+  deleteNews = news => {
+    this.props.deleteNews(news);
   };
 
   render() {
@@ -88,6 +92,7 @@ class News extends React.Component {
           news={this.state.targetNews}
           onChangeField={this.changeField}
           onSendNews={this.sendNews}
+          onDeleteNews={this.deleteNews}
         />
       </Background>
     );

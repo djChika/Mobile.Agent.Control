@@ -16,43 +16,45 @@ function buildMapStateToProps(stores) {
 function buildMapDispatchToProps(stores) {
   let mapDispatchToProps = dispatch =>
     bindActionCreators(
-      Object.assign({}, ...stores.map(store => actionCreators[store])),
+      Object.assign(
+        {},
+        ...stores.flatMap(store => [actionCreators[store], actions[store]])
+      ),
       dispatch
     );
   return mapDispatchToProps;
 }
 
-function fetchData(stores) {
-  let state = global.store.getState();
-
-  let actionsToRun = [];
-  stores.map(store => {
-    if (!state.ui[store].isReady) {
-      actionsToRun.push(...actions[store]);
-    }
-  });
-
-  return new Promise((resolve, reject) => {
-    Promise.all(actionsToRun)
-      .then(() => {
-        resolve();
-      })
-      .catch(err => {
-        reject(err);
-      });
-  });
-}
-
 function Shell(Component, params) {
-  const { stores } = params;
+  const { stores, init } = params;
   class Shelled extends React.Component {
     state = {
       loading: true,
       isError: false
     };
 
-    componentDidMount() {
-      fetchData(stores)
+    fetchData() {
+      if (!stores || !init || stores.length === 0 || init.length === 0) {
+        this.setState({
+          loading: false
+        });
+        return;
+      }
+
+      let state = global.store.getState();
+      let actionsToRun = [];
+      stores.map((store, index) => {
+        if (!state.ui[store].isReady) {
+          let initActions = init[index];
+          initActions.map(initAction => {
+            if (this.props[initAction]) {
+              actionsToRun.push(this.props[initAction]());
+            }
+          });
+        }
+      });
+
+      Promise.all(actionsToRun)
         .then(() => {
           this.setState({
             loading: false
@@ -61,6 +63,10 @@ function Shell(Component, params) {
         .catch(() => {
           this.setState({ isError: true, loading: false });
         });
+    }
+
+    componentDidMount() {
+      this.fetchData();
     }
     render() {
       if (this.state.loading) {

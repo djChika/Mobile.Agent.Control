@@ -15,7 +15,8 @@ const paths = [
     name: 'Новости',
     route: '/news',
     content: Shell(News, {
-      stores: ['news']
+      stores: ['news'],
+      init: [['getNews']]
     }),
     exact: true
   },
