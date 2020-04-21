@@ -1,7 +1,5 @@
-import { addNews, deleteNews } from './news';
-import { setReady } from './ui';
+import { addNewsItem, deleteNewsItem } from './news';
 
 export default {
-  news: { addNews, deleteNews },
-  ui: { setReady }
+  news: { addNewsItem, deleteNewsItem }
 };

@@ -1,8 +1,9 @@
-import { getNews, sendNews } from 'store/actions/news';
+import { getNews, sendNews, deleteNews } from 'store/actions/news';
 
 export default {
   news: {
     getNews,
-    sendNews
+    sendNews,
+    deleteNews
   }
 };

@@ -5,7 +5,7 @@ import { Flex } from 'UIKit/grid';
 
 const LayoutContent = () => {
   return (
-    <Flex mx={'7%'} my="24px" justifyContent="center">
+    <Flex my="24px" justifyContent="center">
       <Switch>
         {paths.map((path, i) => (
           <Route

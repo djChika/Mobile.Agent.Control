@@ -1,5 +1,5 @@
 import initialState from '../initialState';
-import { ADD_NEWS, DELETE_NEWS, SET_NEWS } from '../types';
+import { ADD_NEWS, DELETE_NEWS, SET_NEWS, UPDATE_NEWS } from '../types';
 
 export default function (state = initialState.news, action) {
   switch (action.type) {
@@ -18,10 +18,17 @@ export default function (state = initialState.news, action) {
       };
     }
     case DELETE_NEWS: {
-      const { news } = action.state;
+      const { news, index } = action.state;
       return {
         ...state,
-        list: state.list.filter(x => x !== news)
+        list: state.list.filter((_x, i) => i !== index)
+      };
+    }
+    case UPDATE_NEWS: {
+      const { news, index } = action.state;
+      return {
+        ...state,
+        list: state.list.map((n, i) => (i === index ? news : n))
       };
     }
     default: {

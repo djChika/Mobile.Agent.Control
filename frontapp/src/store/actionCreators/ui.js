@@ -1,3 +1,3 @@
 import { SET_READY } from '../types';
 
-export const setReady = target => ({ type: SET_READY, state: { target } });
+export const setReadyStore = target => ({ type: SET_READY, state: { target } });

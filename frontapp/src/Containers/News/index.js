@@ -16,18 +16,24 @@ const MESSAGES = {
   error: 'Произошла ошибка! Изменения не сохранены.'
 };
 
+const showMessage = type => {
+  message[type](MESSAGES[type]);
+};
 class News extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      targetNews: {},
-      sending: false
+      targetNews: undefined,
+      selectedNewsIndex: -1,
+      sending: false,
+      deleting: false
     };
   }
 
-  selectNews = news => {
+  selectNews = (news, index) => {
     this.setState({
-      targetNews: news
+      targetNews: news,
+      selectedNewsIndex: index
     });
   };
 
@@ -39,44 +45,80 @@ class News extends React.Component {
       }
     }));
   };
-
-  _showMessage = type => {
-    setTimeout(() => {
-      this.setState(
-        {
-          sending: false
-        },
-        () => {
-          message[type](MESSAGES[type]);
-        }
-      );
-    }, 1500);
+  addNews = () => {
+    this.props.addNewsItem({ ...NEWS_OBJ, title: 'Новая' });
   };
 
-  sendNews = () => {
+  saveNews = () => {
     this.setState(
       {
         sending: true
       },
       () => {
         this.props
-          .sendNews(this.state.targetNews)
-          .then(() => {
-            this._showMessage('success');
+          .sendNews(this.state.targetNews, this.state.selectedNewsIndex)
+          .then(res => {
+            const { news } = res;
+            this.setState(
+              {
+                sending: false,
+                targetNews: news
+              },
+              () => {
+                showMessage('success');
+              }
+            );
           })
           .catch(() => {
-            this._showMessage('error');
+            this.setState(
+              {
+                sending: false
+              },
+              () => {
+                showMessage('error');
+              }
+            );
           });
       }
     );
   };
 
-  createNews = () => {
-    this.props.addNews({ ...NEWS_OBJ, title: 'Новая' });
-  };
-
   deleteNews = news => {
-    this.props.deleteNews(news);
+    if (!news.id) {
+      this.props.deleteNewsItem(news, this.state.selectedNewsIndex);
+      this.selectNews(undefined, -1);
+      return;
+    }
+    this.setState(
+      {
+        deleting: true
+      },
+      () => {
+        this.props
+          .deleteNews(news, this.state.selectedNewsIndex)
+          .then(() => {
+            this.setState(
+              {
+                deleting: false
+              },
+              () => {
+                showMessage('success');
+                this.selectNews(undefined, -1);
+              }
+            );
+          })
+          .catch(() => {
+            this.setState(
+              {
+                deleting: false
+              },
+              () => {
+                showMessage('error');
+              }
+            );
+          });
+      }
+    );
   };
 
   render() {
@@ -85,13 +127,15 @@ class News extends React.Component {
         <Menu
           list={this.props.news.list}
           onSelectNews={this.selectNews}
-          onCreateNews={this.createNews}
+          selectedNewsIndex={this.state.selectedNewsIndex}
+          onAddNews={this.addNews}
         />
         <Form
           sending={this.state.sending}
+          deleting={this.state.deleting}
           news={this.state.targetNews}
           onChangeField={this.changeField}
-          onSendNews={this.sendNews}
+          onSaveNews={this.saveNews}
           onDeleteNews={this.deleteNews}
         />
       </Background>

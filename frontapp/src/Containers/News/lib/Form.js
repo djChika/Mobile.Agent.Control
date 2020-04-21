@@ -1,7 +1,11 @@
 import React from 'react';
 import { Box, Flex } from 'UIKit/grid';
-import { Form, Input, Button, Upload } from 'antd';
-import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Upload, Alert } from 'antd';
+import {
+  UploadOutlined,
+  InboxOutlined,
+  DeleteOutlined
+} from '@ant-design/icons';
 
 const rules = [
   {
@@ -58,12 +62,46 @@ function selectInput(type, params) {
   }
 }
 
-const NewsForm = ({ sending, news, onChangeField, onSendNews }) => {
+const NewsForm = ({
+  sending,
+  deleting,
+  news,
+  onChangeField,
+  onSelectPicture,
+  onSaveNews,
+  onDeleteNews
+}) => {
   const [form] = Form.useForm();
 
   React.useEffect(() => {
     form.setFieldsValue(news);
   }, [news]);
+
+  if (!news) {
+    return (
+      <Flex
+        px="30px"
+        width={[300, 450, 700, 900]}
+        height="704px"
+        alignItems="center"
+      >
+        {/* <Alert
+          style={{
+            width: '100%',
+            height: '110px',
+            // height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+          message="Выберите новость"
+          description="Создайте или выберите новость"
+          type="info"
+        /> */}
+      </Flex>
+    );
+  }
 
   return (
     <Box px="30px" width={[300, 450, 700, 900]}>
@@ -73,7 +111,7 @@ const NewsForm = ({ sending, news, onChangeField, onSendNews }) => {
         }}
         form={form}
         onFinish={() => {
-          onSendNews();
+          onSaveNews();
         }}
       >
         {formItems.map((item, i) => {
@@ -92,11 +130,21 @@ const NewsForm = ({ sending, news, onChangeField, onSendNews }) => {
           name="preview"
           label="Превью"
           valuePropName="fileList"
-          getValueFromEvent={normFile}
+          getValueFromEvent={e => {
+            console.log(e);
+          }}
           rules={rules}
-          {...itemParams}
+          {...itemprops}
         >
-          <Upload name="logo" action={normFile} listType="picture">
+          <Upload
+            name="logo"
+            listType="picture"
+            beforeUpload={file => {
+              console.log('file', file);
+              // onSelectPicture(file, 'preview');
+              return false;
+            }}
+          >
             <Button>
               <UploadOutlined /> Выбрать изображение
             </Button>
@@ -104,9 +152,20 @@ const NewsForm = ({ sending, news, onChangeField, onSendNews }) => {
         </Form.Item> */}
 
         <Form.Item>
-          <Flex flexDirection="row" justifyContent="flex-end">
+          <Flex flexDirection="row" justifyContent="space-between">
             <Button loading={sending} type="primary" htmlType="submit">
               Сохранить
+            </Button>
+            <Button
+              loading={deleting}
+              type="link"
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => {
+                onDeleteNews(news);
+              }}
+            >
+              Удалить
             </Button>
           </Flex>
         </Form.Item>
