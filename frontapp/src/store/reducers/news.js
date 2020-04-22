@@ -18,17 +18,21 @@ export default function (state = initialState.news, action) {
       };
     }
     case DELETE_NEWS: {
-      const { news, index } = action.state;
+      const { index } = action.state;
+      let list = state.list;
+      list.splice(index, 1);
       return {
         ...state,
-        list: state.list.filter((_x, i) => i !== index)
+        list
       };
     }
     case UPDATE_NEWS: {
       const { news, index } = action.state;
+      let list = state.list;
+      list[index] = news;
       return {
         ...state,
-        list: state.list.map((n, i) => (i === index ? news : n))
+        list
       };
     }
     default: {
