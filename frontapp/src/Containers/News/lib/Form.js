@@ -66,8 +66,9 @@ const NewsForm = ({
   sending,
   deleting,
   news,
+  onAddFile,
+  onRemoveFile,
   onChangeField,
-  onSelectPicture,
   onSaveNews,
   onDeleteNews
 }) => {
@@ -126,30 +127,41 @@ const NewsForm = ({
           );
         })}
 
-        {/* <Form.Item
-          name="preview"
-          label="Превью"
+        <Form.Item
+          name="pictures"
+          label="Картинки"
           valuePropName="fileList"
-          getValueFromEvent={e => {
-            console.log(e);
-          }}
           rules={rules}
           {...itemprops}
+          getValueFromEvent={e => {
+            console.log(e);
+            if (Array.isArray(e)) {
+              return e;
+            }
+
+            return e && e.fileList;
+          }}
         >
           <Upload
-            name="logo"
-            listType="picture"
-            beforeUpload={file => {
-              console.log('file', file);
-              // onSelectPicture(file, 'preview');
-              return false;
+            fileList={news.pictures}
+            action="/api/News/UploadPicture"
+            // beforeUpload={file => {
+            //   onAddFile(file);
+            // }}
+            onRemove={file => {
+              if (file) onRemoveFile(file);
+            }}
+            onChange={e => {
+              console.log('OnChangeUpload: ', e);
+              const { file } = e;
+              onAddFile(file);
             }}
           >
             <Button>
               <UploadOutlined /> Выбрать изображение
             </Button>
           </Upload>
-        </Form.Item> */}
+        </Form.Item>
 
         <Form.Item>
           <Flex flexDirection="row" justifyContent="space-between">

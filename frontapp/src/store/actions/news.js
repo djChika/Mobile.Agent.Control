@@ -10,7 +10,7 @@ import { setReadyStore } from '../actionCreators/ui';
 export const getNews = () => dispatch =>
   new Promise((resolve, reject) => {
     axios
-      .get(urls.api.news)
+      .get('api/news/getNews')
       .then(res => {
         const { newsList } = res.data;
         dispatch(setNewsList(newsList));
@@ -22,15 +22,32 @@ export const getNews = () => dispatch =>
       });
   });
 
+const SEND_MODES = {
+  add: {
+    method: 'POST',
+    url: '/api/News/AddNews'
+  },
+  update: {
+    method: 'PATCH',
+    url: '/api/News/UpdateNews'
+  }
+};
+
 export const sendNews = (news, index) => dispatch =>
   new Promise((resolve, reject) => {
-    const mode = news.id ? 'update' : 'create';
-    axios
-      .post(urls.api.news + `/${mode}`, { news })
+    const mode = news.id ? 'update' : 'add';
+
+    axios({
+      method: SEND_MODES[mode].method,
+      url: SEND_MODES[mode].url,
+      data: { ...news, pictures: null }
+    })
       .then(res => {
-        const { news } = res.data;
-        dispatch(updateNewsItem(news, index));
-        resolve({ news });
+        const {
+          news: { id }
+        } = res.data;
+        dispatch(updateNewsItem({ ...news, id }, index));
+        resolve({ news: { ...news, id } });
       })
       .catch(err => {
         reject(err);
@@ -39,8 +56,11 @@ export const sendNews = (news, index) => dispatch =>
 
 export const deleteNews = (news, index) => dispatch =>
   new Promise((resolve, reject) => {
-    axios
-      .post(urls.api.news + '/delete', news)
+    axios({
+      method: 'DELETE',
+      url: '/api/news/DeleteNews',
+      params: { newsId: news.id }
+    })
       .then(() => {
         dispatch(deleteNewsItem(news, index));
         resolve();

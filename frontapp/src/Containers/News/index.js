@@ -8,7 +8,9 @@ const NEWS_OBJ = {
   title: undefined,
   shortText: undefined,
   description: undefined,
-  link: undefined
+  link: undefined,
+  pictures: [],
+  picturesIds: []
 };
 
 const MESSAGES = {
@@ -37,6 +39,10 @@ class News extends React.Component {
     });
   };
 
+  addNews = () => {
+    this.props.addNewsItem({ ...NEWS_OBJ, title: 'Новая' });
+  };
+
   changeField = (field, value) => {
     this.setState(prevState => ({
       targetNews: {
@@ -45,8 +51,37 @@ class News extends React.Component {
       }
     }));
   };
-  addNews = () => {
-    this.props.addNewsItem({ ...NEWS_OBJ, title: 'Новая' });
+
+  addFile = file => {
+    this.setState(prevState => {
+      if (
+        // !prevState.targetNews.pictures.find(x => x.name) &&
+        file.status === 'done'
+      )
+        return {
+          targetNews: {
+            ...prevState.targetNews,
+            pictures: [...prevState.targetNews.pictures, file],
+            picturesIds: [
+              ...prevState.targetNews.picturesIds,
+              file.response.pictureId
+            ]
+          }
+        };
+    });
+  };
+
+  removeFile = file => {
+    this.setState(prevState => {
+      let targetNews = prevState.targetNews;
+      const i = targetNews.pictures.indexOf(file);
+      targetNews.pictures.splice(i, 1);
+      targetNews.picturesIds.splice(i, 1);
+
+      return {
+        targetNews
+      };
+    });
   };
 
   saveNews = () => {
@@ -60,10 +95,13 @@ class News extends React.Component {
           .then(res => {
             const { news } = res;
             this.setState(
-              {
+              prevState => ({
                 sending: false,
-                targetNews: news
-              },
+                targetNews: {
+                  ...prevState.targetNews,
+                  id: news.id
+                }
+              }),
               () => {
                 showMessage('success');
               }
@@ -134,6 +172,8 @@ class News extends React.Component {
           sending={this.state.sending}
           deleting={this.state.deleting}
           news={this.state.targetNews}
+          onAddFile={this.addFile}
+          onRemoveFile={this.removeFile}
           onChangeField={this.changeField}
           onSaveNews={this.saveNews}
           onDeleteNews={this.deleteNews}
