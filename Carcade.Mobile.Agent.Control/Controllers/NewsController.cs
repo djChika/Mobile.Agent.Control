@@ -127,7 +127,7 @@ namespace Carcade.Mobile.Supplier.API.Controllers
         public FileResult GetPicture([FromQuery]GetNewsData getNewsData)
         {
             var picture = _newsManager.GetPicture(getNewsData.PictureId);
-            return File(picture.Bin, picture.Type, picture.Name);
+            return File(picture.Bin, picture.Type);
         }
 
     }
