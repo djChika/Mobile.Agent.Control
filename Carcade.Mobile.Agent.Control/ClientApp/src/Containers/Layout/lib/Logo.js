@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { MobileOutlined } from '@ant-design/icons';
 
 const Wrapper = styled.div`
-  margin: 0 5px;
+  margin: 0 20px;
   color: white;
   font-size: 1.125rem;
   font-weight: bold;
