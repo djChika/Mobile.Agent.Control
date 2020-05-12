@@ -1,5 +1,11 @@
 import initialState from '../initialState';
-import { ADD_NEWS, DELETE_NEWS, SET_NEWS, UPDATE_NEWS } from '../types';
+import {
+  ADD_NEWS,
+  DELETE_NEWS,
+  SET_NEWS,
+  UPDATE_NEWS,
+  SET_FILTERS
+} from '../types';
 
 export default function (state = initialState.news, action) {
   switch (action.type) {
@@ -7,35 +13,47 @@ export default function (state = initialState.news, action) {
       const { list } = action.state;
       return {
         ...state,
-        list: [...list],
+        list
       };
     }
+
     case ADD_NEWS: {
       const { news } = action.state;
       return {
         ...state,
         list:
-          state.list && state.list.length > 0 ? [...state.list, news] : [news],
+          state.list && state.list.length > 0 ? [...state.list, news] : [news]
       };
     }
+
     case DELETE_NEWS: {
       const { index } = action.state;
       let list = state.list;
       list.splice(index, 1);
       return {
         ...state,
-        list,
+        list
       };
     }
+
     case UPDATE_NEWS: {
       const { news, index } = action.state;
       let list = state.list;
       list[index] = news;
       return {
         ...state,
-        list,
+        list
       };
     }
+
+    case SET_FILTERS: {
+      const { filters } = action.state;
+      return {
+        ...state,
+        filters
+      };
+    }
+
     default: {
       return state;
     }

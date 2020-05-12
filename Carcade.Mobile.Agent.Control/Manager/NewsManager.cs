@@ -8,17 +8,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Carcade.Mobile.Supplier.API.Manager
 {
     public class NewsManager
     {
         private Carcade_MobileSupplier_DB_Context db;
-        //private MobileSupplierService.ISupplierMobileService supplierMobileService;
+        private MobileSupplierService.ISupplierMobileService supplierMobileService;
 
         public NewsManager(IOptions<AppSettings> settings)
         {
             db = new Carcade_MobileSupplier_DB_Context(settings);
+            supplierMobileService = new MobileSupplierService.SupplierMobileServiceClient();
         }
 
         public List<Pictures> GetPictures(int newsId)
@@ -167,6 +169,16 @@ namespace Carcade.Mobile.Supplier.API.Manager
         {
             var picture = db.News_Pictures.FirstOrDefault(x => x.Id == pictureId);
             return picture;
+        }
+
+        public object GetFilters()
+        {
+            var res = supplierMobileService.GetFiltersListAsync(new MobileSupplierService.GetFiltersListRequest() { }).Result;
+            if (res.Success)
+            {
+                return res.Filters;
+            }
+            return null;
         }
     }
 }

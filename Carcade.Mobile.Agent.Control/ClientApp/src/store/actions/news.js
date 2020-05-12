@@ -1,26 +1,53 @@
 import axios from 'axios';
-import { urls } from 'constants/urls';
 import {
   setNewsList,
   deleteNewsItem,
-  updateNewsItem
+  updateNewsItem,
+  setFiltersList
 } from '../actionCreators/news';
 import { setReadyStore } from '../actionCreators/ui';
 
-export const getNews = () => dispatch =>
+/**
+ * GET MAIN DATA
+ */
+
+let dataTargets = [
+  {
+    request: axios.get('api/news/getNews'),
+    actionCreator: setNewsList
+  },
+  {
+    request: axios.get('api/news/getFilters'),
+    actionCreator: setFiltersList
+  }
+];
+
+export const getNewsData = () => dispatch =>
   new Promise((resolve, reject) => {
+    let requests = dataTargets.map(x => x.request);
     axios
-      .get('api/news/getNews')
-      .then(res => {
-        const { newsList } = res.data;
-        dispatch(setNewsList(newsList));
-        dispatch(setReadyStore('news'));
-        resolve();
-      })
-      .catch(err => {
-        reject(err);
+      .all(requests)
+      .then(
+        axios.spread((...responses) => {
+          responses.map((response, i) => {
+            if (!response.data || Object.keys(responses[i].data).length === 0)
+              reject();
+
+            dispatch(dataTargets[i].actionCreator(responses[i].data));
+          });
+
+          dispatch(setReadyStore('news'));
+          resolve();
+        })
+      )
+      .catch(errors => {
+        reject();
       });
   });
+
+/**
+ * GET MAIN DATA
+ */
 
 const SEND_MODES = {
   add: {

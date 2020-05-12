@@ -26,7 +26,7 @@ function buildMapDispatchToProps(stores) {
 }
 
 function Shell(Component, params) {
-  const { stores, init } = params;
+  const { stores } = params;
   class Shelled extends React.Component {
     state = {
       loading: true,
@@ -34,7 +34,7 @@ function Shell(Component, params) {
     };
 
     fetchData() {
-      if (!stores || !init || stores.length === 0 || init.length === 0) {
+      if (!stores || stores.length === 0) {
         this.setState({
           loading: false
         });
@@ -43,10 +43,9 @@ function Shell(Component, params) {
 
       let state = global.store.getState();
       let actionsToRun = [];
-      stores.map((store, index) => {
+      stores.map(store => {
         if (!state.ui[store].isReady) {
-          let initActions = init[index];
-          initActions.map(initAction => {
+          actions[store].init.map(initAction => {
             if (this.props[initAction]) {
               actionsToRun.push(this.props[initAction]());
             }

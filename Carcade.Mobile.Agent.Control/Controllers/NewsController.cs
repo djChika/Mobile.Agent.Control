@@ -130,5 +130,12 @@ namespace Carcade.Mobile.Supplier.API.Controllers
             return File(picture.Bin, picture.Type);
         }
 
+        [HttpGet("[action]")]
+        public ActionResult<object> GetFilters()
+        {
+            var filters = _newsManager.GetFilters();
+            return new { filters };
+        }
+
     }
 }

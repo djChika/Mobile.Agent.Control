@@ -1,6 +1,7 @@
 const initialState = {
   news: {
-    list: []
+    list: [],
+    filters: []
   },
   ui: {
     news: {

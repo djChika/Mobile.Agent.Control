@@ -4,53 +4,53 @@ import { Form, Input, Button, Upload, Alert } from 'antd';
 import {
   UploadOutlined,
   InboxOutlined,
-  DeleteOutlined
+  DeleteOutlined,
 } from '@ant-design/icons';
 
 const rules = [
   {
-    required: true
-  }
+    required: true,
+  },
 ];
 
 const itemprops = {
   style: {
     display: 'flex',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
-  labelAlign: 'left'
+  labelAlign: 'left',
 };
 
 const INPUT_TYPES = {
-  textarea: 'textarea'
+  textarea: 'textarea',
 };
 
-const formItems = [
+const INPUTS = [
   {
     name: 'title',
     label: 'Название',
     rules,
-    itemprops
+    itemprops,
   },
   {
     name: 'shortText',
     label: 'Краткое описание',
     rules,
     itemprops,
-    type: INPUT_TYPES.textarea
+    type: INPUT_TYPES.textarea,
   },
   {
     name: 'description',
     label: 'Описание',
     rules,
     itemprops,
-    type: INPUT_TYPES.textarea
+    type: INPUT_TYPES.textarea,
   },
   {
     name: 'link',
     label: 'Ссылка',
-    itemprops
-  }
+    itemprops,
+  },
 ];
 
 function selectInput(type, params) {
@@ -70,7 +70,7 @@ const NewsForm = ({
   onRemoveFile,
   onChangeField,
   onSaveNews,
-  onDeleteNews
+  onDeleteNews,
 }) => {
   const [form] = Form.useForm();
 
@@ -108,20 +108,20 @@ const NewsForm = ({
     <Box px="30px" width={[300, 450, 700, 900]}>
       <Form
         style={{
-          width: '100%'
+          width: '100%',
         }}
         form={form}
         onFinish={() => {
           onSaveNews();
         }}
       >
-        {formItems.map((item, i) => {
+        {INPUTS.map((item, i) => {
           return (
             <Form.Item key={i} {...item} {...itemprops}>
               {selectInput(item.type, {
                 onChange: e => {
                   onChangeField(item.name, e.target.value);
-                }
+                },
               })}
             </Form.Item>
           );
