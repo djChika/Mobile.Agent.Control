@@ -8,5 +8,5 @@ export const SET_FILTERS = 'SET_FILTERS';
 // NEWS
 
 // UI
-export const SET_READY = 'SET_READY';
+export const SET_READY_STORE = 'SET_READY';
 // UI

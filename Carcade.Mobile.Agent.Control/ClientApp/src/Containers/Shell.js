@@ -9,7 +9,10 @@ import actions from 'store/actions';
 
 function buildMapStateToProps(stores) {
   let mapStateToProps = state =>
-    Object.assign({}, ...stores.map(store => ({ [store]: state[store] })));
+    Object.assign(
+      {},
+      ...stores.concat(['ui']).map(store => ({ [store]: state[store] }))
+    );
   return mapStateToProps;
 }
 
@@ -18,7 +21,9 @@ function buildMapDispatchToProps(stores) {
     bindActionCreators(
       Object.assign(
         {},
-        ...stores.flatMap(store => [actionCreators[store], actions[store]])
+        ...stores
+          .concat(['ui'])
+          .flatMap(store => [actionCreators[store], actions[store]])
       ),
       dispatch
     );
@@ -41,10 +46,9 @@ function Shell(Component, params) {
         return;
       }
 
-      let state = global.store.getState();
       let actionsToRun = [];
       stores.map(store => {
-        if (!state.ui[store].isReady) {
+        if (!this.props.ui[store].isReady) {
           actions[store].init.map(initAction => {
             if (this.props[initAction]) {
               actionsToRun.push(this.props[initAction]());
@@ -52,14 +56,14 @@ function Shell(Component, params) {
           });
         }
       });
-
       Promise.all(actionsToRun)
         .then(() => {
           this.setState({
             loading: false
           });
+          this.props.setReadyStores(stores);
         })
-        .catch(() => {
+        .catch(err => {
           this.setState({ isError: true, loading: false });
         });
     }

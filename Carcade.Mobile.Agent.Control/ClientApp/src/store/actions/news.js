@@ -1,53 +1,38 @@
 import axios from 'axios';
 import {
   setNewsList,
-  deleteNewsItem,
+  setFiltersList,
   updateNewsItem,
-  setFiltersList
+  deleteNewsItem
 } from '../actionCreators/news';
-import { setReadyStore } from '../actionCreators/ui';
 
-/**
- * GET MAIN DATA
- */
-
-let dataTargets = [
-  {
-    request: axios.get('api/news/getNews'),
-    actionCreator: setNewsList
-  },
-  {
-    request: axios.get('api/news/getFilters'),
-    actionCreator: setFiltersList
-  }
-];
-
-export const getNewsData = () => dispatch =>
+export const getNews = () => dispatch =>
   new Promise((resolve, reject) => {
-    let requests = dataTargets.map(x => x.request);
     axios
-      .all(requests)
-      .then(
-        axios.spread((...responses) => {
-          responses.map((response, i) => {
-            if (!response.data || Object.keys(responses[i].data).length === 0)
-              reject();
-
-            dispatch(dataTargets[i].actionCreator(responses[i].data));
-          });
-
-          dispatch(setReadyStore('news'));
-          resolve();
-        })
-      )
-      .catch(errors => {
-        reject();
+      .get('api/news/getNews')
+      .then(res => {
+        const { newsList } = res.data;
+        dispatch(setNewsList({ newsList }));
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
       });
   });
 
-/**
- * GET MAIN DATA
- */
+export const getFilters = () => dispatch =>
+  new Promise((resolve, reject) => {
+    axios
+      .get('api/news/getFilters')
+      .then(res => {
+        const { filters } = res.data;
+        dispatch(setFiltersList({ filters }));
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 
 const SEND_MODES = {
   add: {
