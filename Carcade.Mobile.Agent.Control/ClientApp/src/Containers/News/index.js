@@ -1,7 +1,6 @@
 import { message } from 'antd';
 import Background from 'Containers/Background';
 import React from 'react';
-import { Flex, Box } from 'UIKit/grid';
 import { Form, Menu } from './lib';
 
 const NEWS_OBJ = {
@@ -48,6 +47,18 @@ class News extends React.Component {
       targetNews: {
         ...prevState.targetNews,
         [field]: value
+      }
+    }));
+  };
+
+  changeFilter = (name, value) => {
+    this.setState(prevState => ({
+      targetNews: {
+        ...prevState.targetNews,
+        filters: {
+          ...prevState.targetNews.filters,
+          [name]: value
+        }
       }
     }));
   };
@@ -172,9 +183,11 @@ class News extends React.Component {
           sending={this.state.sending}
           deleting={this.state.deleting}
           news={this.state.targetNews}
+          filters={this.props.news.filters}
           onAddFile={this.addFile}
           onRemoveFile={this.removeFile}
           onChangeField={this.changeField}
+          onChangeFilter={this.changeFilter}
           onSaveNews={this.saveNews}
           onDeleteNews={this.deleteNews}
         />
