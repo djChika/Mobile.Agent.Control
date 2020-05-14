@@ -5,7 +5,7 @@ import { Flex } from 'UIKit/grid';
 export const LoadingSpinner = () => {
   return (
     <Flex justifyContent="center">
-      <Spin tip="Loading..." />
+      <Spin tip="Загрузка..." />
     </Flex>
   );
 };

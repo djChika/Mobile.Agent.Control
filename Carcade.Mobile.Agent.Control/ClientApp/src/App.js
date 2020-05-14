@@ -4,15 +4,15 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter } from 'react-router-dom';
-import configure from 'store';
+import { default as configureStore } from 'store';
 import theme from 'UIKit/theme';
 
-global.store = configure();
+const store = configureStore();
 
 function App() {
   return (
     <div className="App">
-      <Provider store={global.store}>
+      <Provider store={store}>
         <ThemeProvider theme={theme}>
           <BrowserRouter>
             <Layout />

@@ -6,5 +6,5 @@ export const NotFound = () => (
 );
 
 export const BadServer = () => (
-  <Result status="500" title="500" subTitle="Sorry, the server is wrong." />
+  <Result status="500" title="Упс" subTitle="Что-то сломалось..." />
 );

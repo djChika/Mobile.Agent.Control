@@ -9,7 +9,10 @@ const { Header } = Layout;
 
 const LayoutHeader = () => {
   return (
-    <Header className="header">
+    <Header
+      className="header"
+      style={{ position: 'sticky', top: '0', zIndex: 99999 }}
+    >
       <Flex px={[0, 0, 0, '5%', '15%', '18%']}>
         <Logo />
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
