@@ -21,13 +21,18 @@ const NewsForm = ({
       {},
       { ...news },
       {
-        ...Object.assign({}, ...filters.map(x => ({ [x.type]: null })))
-      },
-      {
-        ...(news && news.filters)
+        filters: [
+          ...filters.map(x => {
+            let filter =
+              news && news.filters && news.filters.find(n => n.type === x.type);
+            return {
+              [x.type]: (filter && filter.value) || null
+            };
+          })
+        ]
       }
     );
-
+    
     form.setFieldsValue(fields);
   }, [news]);
 

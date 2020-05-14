@@ -1,5 +1,5 @@
 import { Form, Select, Divider } from 'antd';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { STYLE_PROPS } from './inputProps';
 const { Option } = Select;
 
@@ -10,15 +10,13 @@ const FilterInputs = ({ filters, onChangeFilter }) => {
       <Divider>Фильтры</Divider>
       {filters.map((filter, i) => {
         return (
-          <>
+          <Fragment key={i}>
             <Form.Item
-              key={i}
-              name={filter.type}
+              name={['filters', i, filter.type]}
               label={filter.name}
               {...STYLE_PROPS}
             >
               <Select
-                defaultValue={null}
                 onChange={value => {
                   onChangeFilter(filter.type, value);
                 }}
@@ -32,7 +30,7 @@ const FilterInputs = ({ filters, onChangeFilter }) => {
                   ))}
               </Select>
             </Form.Item>
-          </>
+          </Fragment>
         );
       })}
     </>

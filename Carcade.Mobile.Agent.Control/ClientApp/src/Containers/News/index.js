@@ -52,16 +52,24 @@ class News extends React.Component {
     }));
   };
 
-  changeFilter = (name, value) => {
-    this.setState(prevState => ({
-      targetNews: {
-        ...prevState.targetNews,
-        filters: {
-          ...prevState.targetNews.filters,
-          [name]: value
-        }
+  changeFilter = (type, value) => {
+    this.setState(prevState => {
+      let filters = prevState.targetNews.filters || [];
+
+      let filterIndex = filters.findIndex(x => x.type === type);
+      if (filterIndex > -1) {
+        filters[filterIndex] = { type, value };
+      } else {
+        filters = [...filters, { type, value }];
       }
-    }));
+
+      return {
+        targetNews: {
+          ...prevState.targetNews,
+          filters: filters
+        }
+      };
+    });
   };
 
   addFile = file => {
