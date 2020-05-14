@@ -22,7 +22,7 @@ export default function (state = initialState.news, action) {
       return {
         ...state,
         list:
-          state.list && state.list.length > 0 ? [...state.list, news] : [news]
+          state.list && state.list.length > 0 ? [news, ...state.list] : [news]
       };
     }
 

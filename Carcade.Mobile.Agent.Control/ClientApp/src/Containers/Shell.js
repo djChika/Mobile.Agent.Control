@@ -8,25 +8,31 @@ import actionCreators from 'store/actionCreators';
 import actions from 'store/actions';
 
 function buildMapStateToProps(stores) {
-  let mapStateToProps = state =>
-    Object.assign(
-      {},
-      ...stores.concat(['ui']).map(store => ({ [store]: state[store] }))
-    );
+  let mapStateToProps = state => ({
+    stores: {
+      ...Object.assign(
+        {},
+        ...[stores, 'ui'].map(store => ({ [store]: state[store] }))
+      )
+    }
+  });
   return mapStateToProps;
 }
 
 function buildMapDispatchToProps(stores) {
-  let mapDispatchToProps = dispatch =>
-    bindActionCreators(
-      Object.assign(
+  let mapDispatchToProps = dispatch => ({
+    actions: {
+      ...Object.assign(
         {},
-        ...stores
-          .concat(['ui'])
-          .flatMap(store => [actionCreators[store], actions[store]])
-      ),
-      dispatch
-    );
+        ...[stores, 'ui'].map(store => ({
+          [store]: bindActionCreators(
+            { ...actions[store], ...actionCreators[store] },
+            dispatch
+          )
+        }))
+      )
+    }
+  });
   return mapDispatchToProps;
 }
 
@@ -39,19 +45,13 @@ function Shell(Component, params) {
     };
 
     fetchData() {
-      if (!stores || stores.length === 0) {
-        this.setState({
-          loading: false
-        });
-        return;
-      }
-
       let actionsToRun = [];
       stores.map(store => {
-        if (!this.props.ui[store].isReady) {
+        if (!this.props.stores.ui[store].isReady) {
           actions[store].init.map(initAction => {
-            if (this.props[initAction]) {
-              actionsToRun.push(this.props[initAction]());
+            let action = this.props.actions[store][initAction];
+            if (action) {
+              actionsToRun.push(action());
             }
           });
         }
@@ -61,7 +61,8 @@ function Shell(Component, params) {
           this.setState({
             loading: false
           });
-          this.props.setReadyStores(stores);
+          const { setReadyStores } = this.props.actions.ui;
+          setReadyStores(stores);
         })
         .catch(err => {
           this.setState({ isError: true, loading: false });

@@ -39,7 +39,8 @@ class News extends React.Component {
   };
 
   addNews = () => {
-    this.props.addNewsItem({ ...NEWS_OBJ, title: 'Новая' });
+    const { actions } = this.props;
+    actions.news.addNewsItem({ ...NEWS_OBJ, title: 'Новая' });
   };
 
   changeField = (field, value) => {
@@ -101,7 +102,8 @@ class News extends React.Component {
         sending: true
       },
       () => {
-        this.props
+        const { actions } = this.props;
+        actions.news
           .sendNews(this.state.targetNews, this.state.selectedNewsIndex)
           .then(res => {
             const { news } = res;
@@ -133,8 +135,9 @@ class News extends React.Component {
   };
 
   deleteNews = news => {
+    const { actions } = this.props;
     if (!news.id) {
-      this.props.deleteNewsItem(news, this.state.selectedNewsIndex);
+      actions.news.deleteNewsItem(news, this.state.selectedNewsIndex);
       this.selectNews(undefined, -1);
       return;
     }
@@ -143,7 +146,7 @@ class News extends React.Component {
         deleting: true
       },
       () => {
-        this.props
+        actions.news
           .deleteNews(news, this.state.selectedNewsIndex)
           .then(() => {
             this.setState(
@@ -171,10 +174,11 @@ class News extends React.Component {
   };
 
   render() {
+    const { stores } = this.props;
     return (
       <Background>
         <Menu
-          list={this.props.news.list}
+          list={stores.news.list}
           onSelectNews={this.selectNews}
           selectedNewsIndex={this.state.selectedNewsIndex}
           onAddNews={this.addNews}
@@ -183,7 +187,7 @@ class News extends React.Component {
           sending={this.state.sending}
           deleting={this.state.deleting}
           news={this.state.targetNews}
-          filters={this.props.news.filters}
+          filters={stores.news.filters}
           onAddFile={this.addFile}
           onRemoveFile={this.removeFile}
           onChangeField={this.changeField}
