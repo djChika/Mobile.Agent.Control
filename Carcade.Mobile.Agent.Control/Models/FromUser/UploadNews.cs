@@ -1,8 +1,12 @@
-﻿using Carcade.Mobile.Supplier.API.Models.Response;
-using System;
+﻿using System;
 
-namespace Carcade.Mobile.Supplier.API.Models.FromUser
+namespace Carcade.Mobile.Agent.Control.API.Models.FromUser
 {
+    public class Filter
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
+    }
     public class UploadNews
     {
         public int Id { get; set; }
@@ -12,6 +16,6 @@ namespace Carcade.Mobile.Supplier.API.Models.FromUser
         public string ShortText { get; set; }
         public string Link { get; set; }
         public int[] PicturesIds { get; set; }
-        //public Pictures[] Pictures { get; set; }
+        public Filter[] Filters { get; set; }
     }
 }

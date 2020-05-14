@@ -1,16 +1,16 @@
-﻿using Carcade.Mobile.Supplier.API.Context;
-using Carcade.Mobile.Supplier.API.Models;
-using Carcade.Mobile.Supplier.API.Models.DB;
-using Carcade.Mobile.Supplier.API.Models.Response;
+﻿using Carcade.Mobile.Agent.Control.API.Context;
+using Carcade.Mobile.Agent.Control.API.Models;
+using Carcade.Mobile.Agent.Control.API.Models.DB;
+using Carcade.Mobile.Agent.Control.API.Models.FromUser;
+using Carcade.Mobile.Agent.Control.API.Models.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Carcade.Mobile.Supplier.API.Manager
+namespace Carcade.Mobile.Agent.Control.API.Manager
 {
     public class NewsManager
     {
@@ -23,7 +23,7 @@ namespace Carcade.Mobile.Supplier.API.Manager
             supplierMobileService = new MobileSupplierService.SupplierMobileServiceClient();
         }
 
-        public List<Pictures> GetPictures(int newsId)
+        private List<Pictures> GetPictures(int newsId)
         {
             var query = from picture in db.News_Pictures
                         join ntp in db.News_To_Pictures on picture.Id equals ntp.PictureId
@@ -43,13 +43,22 @@ namespace Carcade.Mobile.Supplier.API.Manager
             return pictures;
         }
 
-        private IEnumerable<object> AttachPicturesToNews(List<News> news)
+        private List<News_Filters> GetFilters(int newsId)
+        {
+            var query = db.News_Filters.Where(x => x.NewsId == newsId).ToList();
+            var filters = query.ToList();
+            return filters;
+        }
+
+        private IEnumerable<object> AttachPicturesAndFiltersToNews(List<News> news)
         {
             var newsWithPictures = news.Select(n =>
             {
                 var pictures = GetPictures(n.Id);
                 var picturesIds = new List<int>();
                 pictures.ForEach(pic => { picturesIds.Add(pic.Id); });
+
+                var filters = GetFilters(n.Id);
                 return new
                 {
                     n.Id,
@@ -59,7 +68,8 @@ namespace Carcade.Mobile.Supplier.API.Manager
                     n.ShortText,
                     n.Link,
                     pictures,
-                    picturesIds
+                    picturesIds,
+                    filters
                 };
             });
             return newsWithPictures;
@@ -68,10 +78,29 @@ namespace Carcade.Mobile.Supplier.API.Manager
         public object GetNews()
         {
             var news = db.News.OrderByDescending(x => x.Date).ToList();
-            var newsWithPictures = AttachPicturesToNews(news);
+            var newsWithPictures = AttachPicturesAndFiltersToNews(news);
             return newsWithPictures;
         }
 
+        public void SaveNewsFilters(int newsId, Filter[] Filters)
+        {
+            db.News_Filters.RemoveRange(db.News_Filters.Where(x => x.NewsId == newsId));
+
+            if (Filters.Count() > 0)
+            {
+                foreach (var filter in Filters)
+                {
+                    db.News_Filters.Add(new News_Filters
+                    {
+                        NewsId = newsId,
+                        Type = filter.Type,
+                        Value = filter.Value
+                    });
+                }
+            }
+
+            db.SaveChanges();
+        }
 
         public News AddNews(News news)
         {
@@ -174,6 +203,18 @@ namespace Carcade.Mobile.Supplier.API.Manager
         public object GetFilters()
         {
             var res = supplierMobileService.GetFiltersListAsync(new MobileSupplierService.GetFiltersListRequest() { }).Result;
+
+            /*
+             * Fix dublicates
+             * **/
+            //foreach (var filter in res.Filters)
+            //{
+            //    filter.Items = filter.Items
+            //        .GroupBy(x => x.Id).Where(x => x.Count() == 1)
+            //        .Select(x => x.First())
+            //        .ToArray();
+            //}
+
             if (res.Success)
             {
                 return res.Filters;

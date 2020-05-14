@@ -1,10 +1,10 @@
-﻿using Carcade.Mobile.Supplier.API.Models;
-using Carcade.Mobile.Supplier.API.Models.DB;
+﻿using Carcade.Mobile.Agent.Control.API.Models;
+using Carcade.Mobile.Agent.Control.API.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Data.SqlClient;
 
-namespace Carcade.Mobile.Supplier.API.Context
+namespace Carcade.Mobile.Agent.Control.API.Context
 {
     public class Carcade_MobileSupplier_DB_Context : DbContext
     {
@@ -34,6 +34,7 @@ namespace Carcade.Mobile.Supplier.API.Context
         public DbSet<News> News { get; set; }
         public DbSet<News_Pictures> News_Pictures { get; set; }
         public DbSet<News_To_Pictures> News_To_Pictures { get; set; }
+        public DbSet<News_Filters> News_Filters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

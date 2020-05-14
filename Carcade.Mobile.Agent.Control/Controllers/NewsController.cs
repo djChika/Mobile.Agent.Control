@@ -1,8 +1,7 @@
-﻿using Carcade.Mobile.Supplier.API.Manager;
-using Carcade.Mobile.Supplier.API.Models;
-using Carcade.Mobile.Supplier.API.Models.DB;
-using Carcade.Mobile.Supplier.API.Models.FromUser;
-using Carcade.Mobile.Supplier.Control.API.Models.FromUser;
+﻿using Carcade.Mobile.Agent.Control.API.Manager;
+using Carcade.Mobile.Agent.Control.API.Models;
+using Carcade.Mobile.Agent.Control.API.Models.DB;
+using Carcade.Mobile.Agent.Control.API.Models.FromUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -10,7 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Carcade.Mobile.Supplier.API.Controllers
+namespace Carcade.Mobile.Agent.Control.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -43,6 +42,7 @@ namespace Carcade.Mobile.Supplier.API.Controllers
             });
 
             _newsManager.LinkPicturesToNews(addedNews.Id, news.PicturesIds);
+            _newsManager.SaveNewsFilters(addedNews.Id, news.Filters);
 
             if (addedNews != null)
             {
@@ -72,6 +72,7 @@ namespace Carcade.Mobile.Supplier.API.Controllers
             });
 
             _newsManager.LinkPicturesToNews(updatedNews.Id, news.PicturesIds);
+            _newsManager.SaveNewsFilters(updatedNews.Id, news.Filters);
 
             if (updatedNews != null)
             {

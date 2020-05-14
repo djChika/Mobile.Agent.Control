@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Carcade.Mobile.Supplier.API.Models
+namespace Carcade.Mobile.Agent.Control.API.Models
 {
     public class Credentials
     {

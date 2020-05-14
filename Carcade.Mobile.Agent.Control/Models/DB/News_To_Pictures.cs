@@ -1,4 +1,4 @@
-﻿namespace Carcade.Mobile.Supplier.API.Models.DB
+﻿namespace Carcade.Mobile.Agent.Control.API.Models.DB
 {
     public class News_To_Pictures
     {

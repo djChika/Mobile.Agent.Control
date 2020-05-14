@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Carcade.Mobile.Supplier.API.Controllers
+namespace Carcade.Mobile.Agent.Control.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

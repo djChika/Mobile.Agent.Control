@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Carcade.Mobile.Supplier.Control.API.Models.FromUser
+namespace Carcade.Mobile.Agent.Control.API.Models.FromUser
 {
     public class GetNewsData
     {

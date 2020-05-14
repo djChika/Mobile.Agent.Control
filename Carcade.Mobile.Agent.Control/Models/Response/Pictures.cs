@@ -1,4 +1,4 @@
-﻿namespace Carcade.Mobile.Supplier.API.Models.Response
+﻿namespace Carcade.Mobile.Agent.Control.API.Models.Response
 {
     public class Pictures
     {

@@ -1,4 +1,4 @@
-using Carcade.Mobile.Supplier.API.Models;
+using Carcade.Mobile.Agent.Control.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

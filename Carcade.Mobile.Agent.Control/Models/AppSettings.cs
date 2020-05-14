@@ -1,4 +1,4 @@
-﻿namespace Carcade.Mobile.Supplier.API.Models
+﻿namespace Carcade.Mobile.Agent.Control.API.Models
 {
     public class AppSettings
     {
