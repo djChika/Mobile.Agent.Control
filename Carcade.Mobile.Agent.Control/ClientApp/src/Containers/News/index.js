@@ -17,6 +17,8 @@ const MESSAGES = {
   error: 'Произошла ошибка! Изменения не сохранены.'
 };
 
+message.config({ top: 100 });
+
 const showMessage = type => {
   message[type](MESSAGES[type]);
 };

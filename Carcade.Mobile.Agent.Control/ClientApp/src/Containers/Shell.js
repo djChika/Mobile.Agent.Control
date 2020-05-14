@@ -46,16 +46,16 @@ function Shell(Component, params) {
 
     fetchData() {
       let actionsToRun = [];
-      stores.map(store => {
+      for (let store of stores) {
         if (!this.props.stores.ui[store].isReady) {
-          actions[store].init.map(initAction => {
+          for (let initAction of actions[store].init) {
             let action = this.props.actions[store][initAction];
             if (action) {
               actionsToRun.push(action());
             }
-          });
+          }
         }
-      });
+      }
       Promise.all(actionsToRun)
         .then(() => {
           this.setState({
