@@ -1,5 +1,5 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import { Button, Form } from 'antd';
+import { DeleteOutlined, QuestionCircleOutlined } from '@ant-design/icons';
+import { Button, Form, Popconfirm } from 'antd';
 import React from 'react';
 import { Flex } from 'UIKit/grid';
 
@@ -9,17 +9,17 @@ const BottomButtons = ({ onDeleteNews, sending, deleting, news }) => (
       <Button loading={sending} type="primary" htmlType="submit">
         Сохранить
       </Button>
-      <Button
-        loading={deleting}
-        type="link"
-        danger
-        icon={<DeleteOutlined />}
-        onClick={() => {
+      <Popconfirm
+        title="Вы уверены, что хотите удалить новость?"
+        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+        onConfirm={() => {
           onDeleteNews(news);
         }}
       >
-        Удалить
-      </Button>
+        <Button loading={deleting} type="link" danger icon={<DeleteOutlined />}>
+          Удалить
+        </Button>
+      </Popconfirm>
     </Flex>
   </Form.Item>
 );
