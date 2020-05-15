@@ -25,14 +25,15 @@ const NewsForm = ({
           ...filters.map(x => {
             let filter =
               news && news.filters && news.filters.find(n => n.type === x.type);
-            return {
-              [x.type]: (filter && filter.value) || null
-            };
+            if (filter && filter.values)
+              return {
+                [x.type]: filter.values
+              };
           })
         ]
       }
     );
-    
+
     form.setFieldsValue(fields);
   }, [news]);
 

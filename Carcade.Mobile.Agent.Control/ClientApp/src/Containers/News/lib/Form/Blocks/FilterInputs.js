@@ -17,8 +17,9 @@ const FilterInputs = ({ filters, onChangeFilter }) => {
               {...STYLE_PROPS}
             >
               <Select
-                onChange={value => {
-                  onChangeFilter(filter.type, value);
+                mode="multiple"
+                onChange={values => {
+                  onChangeFilter(filter.type, values);
                 }}
               >
                 <Option value={null}>Не выбрано</Option>

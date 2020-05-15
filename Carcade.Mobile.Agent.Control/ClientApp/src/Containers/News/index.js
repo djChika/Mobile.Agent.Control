@@ -54,15 +54,19 @@ class News extends React.Component {
     }));
   };
 
-  changeFilter = (type, value) => {
+  changeFilter = (type, values) => {
     this.setState(prevState => {
       let filters = prevState.targetNews.filters || [];
 
       let filterIndex = filters.findIndex(x => x.type === type);
       if (filterIndex > -1) {
-        filters[filterIndex] = { type, value };
+        if (!values || values.length === 0) {
+          filters.splice(filterIndex, 1);
+        } else {
+          filters[filterIndex] = { type, values };
+        }
       } else {
-        filters = [...filters, { type, value }];
+        filters = [...filters, { type, values }];
       }
 
       return {

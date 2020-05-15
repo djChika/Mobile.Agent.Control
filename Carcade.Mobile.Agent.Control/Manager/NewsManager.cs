@@ -43,11 +43,33 @@ namespace Carcade.Mobile.Agent.Control.API.Manager
             return pictures;
         }
 
-        private List<News_Filters> GetFilters(int newsId)
+        private List<Filter> GetFilters(int newsId)
         {
             var query = db.News_Filters.Where(x => x.NewsId == newsId).ToList();
             var filters = query.ToList();
-            return filters;
+            var types = filters.GroupBy(x => x.Type).Select(x => x.FirstOrDefault()).Select(x => x.Type);
+
+            var res = new List<Filter>();
+
+            foreach (var type in types)
+            {
+                var values = new List<string>();
+                foreach (var filter in filters)
+                {
+                    if (filter.NewsId == newsId && filter.Type == type)
+                    {
+                        values.Add(filter.Value);
+                    }
+                }
+                res.Add(new Filter()
+                {
+                    Type = type,
+                    Values = values.ToArray()
+                });
+            }
+
+
+            return res;
         }
 
         private IEnumerable<object> AttachPicturesAndFiltersToNews(List<News> news)
@@ -57,8 +79,8 @@ namespace Carcade.Mobile.Agent.Control.API.Manager
                 var pictures = GetPictures(n.Id);
                 var picturesIds = new List<int>();
                 pictures.ForEach(pic => { picturesIds.Add(pic.Id); });
-
                 var filters = GetFilters(n.Id);
+
                 return new
                 {
                     n.Id,
@@ -90,12 +112,15 @@ namespace Carcade.Mobile.Agent.Control.API.Manager
             {
                 foreach (var filter in Filters)
                 {
-                    db.News_Filters.Add(new News_Filters
+                    foreach (var value in filter.Values)
                     {
-                        NewsId = newsId,
-                        Type = filter.Type,
-                        Value = filter.Value
-                    });
+                        db.News_Filters.Add(new News_Filters
+                        {
+                            NewsId = newsId,
+                            Type = filter.Type,
+                            Value = value
+                        });
+                    }
                 }
             }
 
