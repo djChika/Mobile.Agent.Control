@@ -166,8 +166,10 @@ namespace Carcade.Mobile.Agent.Control.API.Manager
                 if (targetNews != null)
                 {
                     db.News.Remove(targetNews);
+                    db.News_To_Pictures.RemoveRange(db.News_To_Pictures.Where(x => x.NewsId == newsId));
+                    db.News_Filters.RemoveRange(db.News_Filters.Where(x => x.NewsId == newsId));
                     var res = db.SaveChanges();
-                    return res == 1;
+                    return res >= 1;
                 }
                 return false;
             }
@@ -200,6 +202,12 @@ namespace Carcade.Mobile.Agent.Control.API.Manager
             {
                 file.CopyTo(ms);
                 fileData = ms.ToArray();
+            }
+
+            var existedPicture = db.News_Pictures.FirstOrDefault(x => x.Name == file.FileName && x.Bin == fileData);
+            if (existedPicture != null)
+            {
+                return existedPicture.Id;
             }
 
             var picture = new News_Pictures()
