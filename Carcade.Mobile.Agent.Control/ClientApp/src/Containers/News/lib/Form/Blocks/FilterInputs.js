@@ -18,6 +18,7 @@ const FilterInputs = ({ filters, onChangeFilter }) => {
             >
               <Select
                 mode="multiple"
+                optionFilterProp='children'
                 onChange={values => {
                   onChangeFilter(filter.type, values);
                 }}
