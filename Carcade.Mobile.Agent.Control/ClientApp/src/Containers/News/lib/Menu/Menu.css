@@ -3,4 +3,6 @@
   flex-grow: 1 !important;
   overflow-y: auto !important;
   background: none;
+  width: 280px !important;
+  max-width: 280px !important;
 }
