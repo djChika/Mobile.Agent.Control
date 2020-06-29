@@ -9,29 +9,28 @@ import actions from 'store/actions';
 
 function buildMapStateToProps(stores) {
   let mapStateToProps = state => ({
-    stores: {
-      ...Object.assign(
-        {},
-        ...[stores, 'ui'].map(store => ({ [store]: state[store] }))
-      )
-    }
+    stores: Object.assign(
+      {},
+      ...stores
+        .concat(['ui'])
+        .map(store => ({ [store]: state[store] })),
+    ),
   });
+
   return mapStateToProps;
 }
 
 function buildMapDispatchToProps(stores) {
   let mapDispatchToProps = dispatch => ({
-    actions: {
-      ...Object.assign(
-        {},
-        ...[stores, 'ui'].map(store => ({
-          [store]: bindActionCreators(
-            { ...actions[store], ...actionCreators[store] },
-            dispatch
-          )
-        }))
-      )
-    }
+    actions: Object.assign(
+      {},
+      ...stores.concat(['ui']).map(store => ({
+        [store]: bindActionCreators(
+          { ...actions[store], ...actionCreators[store] },
+          dispatch,
+        ),
+      })),
+    ),
   });
   return mapDispatchToProps;
 }
