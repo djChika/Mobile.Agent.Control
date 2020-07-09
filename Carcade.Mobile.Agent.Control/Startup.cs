@@ -1,3 +1,4 @@
+using Carcade.Mobile.Agent.Control.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -27,6 +28,8 @@ namespace Carcade.MobileAgent.Control
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
