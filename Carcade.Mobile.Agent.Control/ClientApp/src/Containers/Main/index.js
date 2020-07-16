@@ -21,6 +21,7 @@ const Main = () => {
         justifyContent="center"
         alignItems="center"
         px="30px"
+        py="24px"
         width={[500, 650, 900, 1100]}
         height="400px"
       >

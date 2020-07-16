@@ -2,6 +2,7 @@ import { message } from 'antd';
 import Background from 'Containers/Background';
 import React from 'react';
 import { Form, Menu } from './lib';
+import { Flex } from 'UIKit/grid';
 
 const NEWS_OBJ = {
   title: undefined,
@@ -191,24 +192,26 @@ class News extends React.Component {
     const { stores } = this.props;
     return (
       <Background>
-        <Menu
-          list={stores.news.list}
-          onSelectNews={this.selectNews}
-          selectedNewsIndex={this.state.selectedNewsIndex}
-          onAddNews={this.addNews}
-        />
-        <Form
-          sending={this.state.sending}
-          deleting={this.state.deleting}
-          news={this.state.targetNews}
-          filters={stores.news.filters}
-          onAddFile={this.addFile}
-          onRemoveFile={this.removeFile}
-          onChangeField={this.changeField}
-          onChangeFilter={this.changeFilter}
-          onSaveNews={this.saveNews}
-          onDeleteNews={this.deleteNews}
-        />
+        <Flex py="24px">
+          <Menu
+            list={stores.news.list}
+            onSelectNews={this.selectNews}
+            selectedNewsIndex={this.state.selectedNewsIndex}
+            onAddNews={this.addNews}
+          />
+          <Form
+            sending={this.state.sending}
+            deleting={this.state.deleting}
+            news={this.state.targetNews}
+            filters={stores.news.filters}
+            onAddFile={this.addFile}
+            onRemoveFile={this.removeFile}
+            onChangeField={this.changeField}
+            onChangeFilter={this.changeFilter}
+            onSaveNews={this.saveNews}
+            onDeleteNews={this.deleteNews}
+          />
+        </Flex>
       </Background>
     );
   }

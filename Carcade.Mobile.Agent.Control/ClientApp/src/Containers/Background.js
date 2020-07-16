@@ -6,7 +6,7 @@ const Background = props => {
     <Flex
       {...props}
       style={{
-        padding: '24px 0',
+        // padding: '24px 0',
         background: '#fff',
         ...props.style
       }}

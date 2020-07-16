@@ -1,4 +1,4 @@
-﻿using Carcade.Mobile.Agent.Control.API.Models;
+using Carcade.Mobile.Agent.Control.API.Models;
 using Carcade.Mobile.Agent.Control.API.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -35,6 +35,7 @@ namespace Carcade.Mobile.Agent.Control.API.Context
         public DbSet<News_Pictures> News_Pictures { get; set; }
         public DbSet<News_To_Pictures> News_To_Pictures { get; set; }
         public DbSet<News_Filters> News_Filters { get; set; }
+        public DbSet<Notification_Subscribers> Notification_Subscribers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

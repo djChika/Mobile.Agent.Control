@@ -11,10 +11,8 @@ function buildMapStateToProps(stores) {
   let mapStateToProps = state => ({
     stores: Object.assign(
       {},
-      ...stores
-        .concat(['ui'])
-        .map(store => ({ [store]: state[store] })),
-    ),
+      ...stores.concat(['ui']).map(store => ({ [store]: state[store] }))
+    )
   });
 
   return mapStateToProps;
@@ -27,16 +25,15 @@ function buildMapDispatchToProps(stores) {
       ...stores.concat(['ui']).map(store => ({
         [store]: bindActionCreators(
           { ...actions[store], ...actionCreators[store] },
-          dispatch,
-        ),
-      })),
-    ),
+          dispatch
+        )
+      }))
+    )
   });
   return mapDispatchToProps;
 }
 
-function Shell(Component, params) {
-  const { stores } = params;
+function Shell({ Component, stores }) {
   class Shelled extends React.Component {
     state = {
       loading: true,

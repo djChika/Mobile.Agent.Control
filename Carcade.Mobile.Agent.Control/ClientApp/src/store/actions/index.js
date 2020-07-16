@@ -1,4 +1,5 @@
-import { getNews, getFilters, sendNews, deleteNews } from 'store/actions/news';
+import { getNews, getFilters, sendNews, deleteNews } from './news';
+import { getSubscribers, sendNotification } from './notifications';
 
 export default {
   news: {
@@ -7,5 +8,10 @@ export default {
     getFilters,
     sendNews,
     deleteNews
+  },
+  notifications: {
+    init: ['getSubscribers'],
+    getSubscribers,
+    sendNotification
   }
 };

@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
-import news from './news';
 import ui from './ui';
+import news from './news';
+import notifications from './notifications';
 
 const reducers = combineReducers({
+  ui,
   news,
-  ui
+  notifications
 });
 
 const rootReducer = (state, action) => {

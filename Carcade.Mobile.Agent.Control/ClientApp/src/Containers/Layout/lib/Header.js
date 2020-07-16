@@ -11,11 +11,11 @@ const LayoutHeader = () => {
   return (
     <Header
       className="header"
-      style={{ position: 'sticky', top: '0', zIndex: 99999 }}
+      style={{ position: 'sticky', top: '0', zIndex: 99 }}
     >
       <Flex px={[0, 0, 0, '5%', '15%', '18%']}>
         <Logo />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+        <Menu theme="dark" mode="horizontal">
           {paths.map((path, i) => {
             if (path.route) {
               return (

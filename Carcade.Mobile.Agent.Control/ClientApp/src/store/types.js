@@ -1,3 +1,7 @@
+// UI
+export const SET_READY_STORE = 'SET_READY';
+// UI
+
 // NEWS
 export const SET_NEWS = 'SET_NEWS';
 export const ADD_NEWS = 'ADD_NEWS';
@@ -7,6 +11,9 @@ export const UPDATE_NEWS = 'UPDATE_NEWS';
 export const SET_FILTERS = 'SET_FILTERS';
 // NEWS
 
-// UI
-export const SET_READY_STORE = 'SET_READY';
-// UI
+//NOTIFICATIONS
+export const SET_SUBSCRIBERS = 'SET_SUBSCRIBERS';
+export const ADD_SUBSCRIBER = 'ADD_SUBSCRIBER';
+export const DELETE_SUBSCRIBER = 'DELETE_SUBSCRIBER';
+export const UPDATE_SUBSCRIBER = 'UPDATE_SUBSCRIBER';
+//NOTIFICATIONS

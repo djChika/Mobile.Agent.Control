@@ -6,7 +6,13 @@ const initialState = {
   ui: {
     news: {
       isReady: false
+    },
+    notifications: {
+      isReady: false
     }
+  },
+  notifications: {
+    subscribersList: []
   }
 };
 

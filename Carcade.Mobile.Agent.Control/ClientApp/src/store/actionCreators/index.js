@@ -1,7 +1,9 @@
-import { addNewsItem, deleteNewsItem } from './news';
 import { setReadyStores } from './ui';
+import { addNewsItem, deleteNewsItem } from './news';
+import { setSubscribersList } from './notifications';
 
 export default {
+  ui: { setReadyStores },
   news: { addNewsItem, deleteNewsItem },
-  ui: { setReadyStores }
+  notifications: { setSubscribersList }
 };
