@@ -30,7 +30,7 @@ namespace Carcade.Mobile.Agent.Control.Manager
             return subscribers;
         }
 
-        public object SendNotification(SendNotificationData sendNotificationData)
+        public void SendNotification(SendNotificationData sendNotificationData)
         {
             string url = "http://localhost:5002/api/push/all";
 
@@ -52,13 +52,11 @@ namespace Carcade.Mobile.Agent.Control.Manager
                 var response = client.PostAsync(url, data).Result;
                 var result = response.Content.ReadAsStringAsync().Result;
 
-                if (response.IsSuccessStatusCode || response.StatusCode == HttpStatusCode.OK)
+                if (!response.IsSuccessStatusCode || response.StatusCode != HttpStatusCode.OK)
                 {
-                    return true;
+                    throw new Exception("Error while sending notifications!");
                 }
-
             }
-            return false;
         }
     }
 }

@@ -37,11 +37,11 @@ export const getFilters = () => dispatch =>
 const SEND_MODES = {
   add: {
     method: 'POST',
-    url: '/api/News/AddNews'
+    url: 'api/News/AddNews'
   },
   update: {
     method: 'PATCH',
-    url: '/api/News/UpdateNews'
+    url: 'api/News/UpdateNews'
   }
 };
 
@@ -70,7 +70,7 @@ export const deleteNews = (news, index) => dispatch =>
   new Promise((resolve, reject) => {
     axios({
       method: 'DELETE',
-      url: '/api/news/DeleteNews',
+      url: 'api/news/DeleteNews',
       params: { newsId: news.id }
     })
       .then(() => {

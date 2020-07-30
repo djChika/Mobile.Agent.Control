@@ -16,7 +16,7 @@ const paths = [
     id: 'News',
     name: 'Новости',
     route: '/news',
-    content: Shell({ Component: News, stores: ['news'] }),
+    content: Shell({ Component: News, stores: ['news', 'notifications'] }),
     exact: true
   },
   {

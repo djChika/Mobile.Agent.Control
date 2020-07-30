@@ -134,6 +134,12 @@ class News extends React.Component {
                 showMessage('success');
               }
             );
+            actions.notifications.sendNotification({
+              agentIds: [],
+              title: news.title,
+              body: news.shortText,
+              data: { target: 'news' }
+            });
           })
           .catch(() => {
             this.setState(

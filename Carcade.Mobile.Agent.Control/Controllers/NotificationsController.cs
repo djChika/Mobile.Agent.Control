@@ -26,10 +26,9 @@ namespace Carcade.Mobile.Agent.Control.Controllers
         }
 
         [HttpPost("[action]")]
-        public ActionResult<object> SendNotification(SendNotificationData sendNotificationData)
+        public void SendNotification([FromBody] SendNotificationData sendNotificationData)
         {
-            var res = _notificationsManager.SendNotification(sendNotificationData);
-            return res;
+            _notificationsManager.SendNotification(sendNotificationData);
         }
     }
 }

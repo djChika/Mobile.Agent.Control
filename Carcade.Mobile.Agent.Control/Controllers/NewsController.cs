@@ -42,7 +42,9 @@ namespace Carcade.Mobile.Agent.Control.API.Controllers
             });
 
             _newsManager.LinkPicturesToNews(addedNews.Id, news.PicturesIds);
-            _newsManager.SaveNewsFilters(addedNews.Id, news.Filters);
+
+            if (news.Filters != null)
+                _newsManager.SaveNewsFilters(addedNews.Id, news.Filters);
 
             if (addedNews != null)
             {
@@ -125,7 +127,7 @@ namespace Carcade.Mobile.Agent.Control.API.Controllers
         }
 
         [HttpGet("[action]")]
-        public FileResult GetPicture([FromQuery]GetNewsData getNewsData)
+        public FileResult GetPicture([FromQuery] GetNewsData getNewsData)
         {
             var picture = _newsManager.GetPicture(getNewsData.PictureId);
             return File(picture.Bin, picture.Type);
